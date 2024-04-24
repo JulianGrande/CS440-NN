@@ -9,10 +9,8 @@
 # This file contains feature extraction methods and harness 
 # code for data classification
 
-import mostFrequent
-import naiveBayes
+
 import perceptron
-import mira
 import samples
 import sys
 import util
@@ -29,7 +27,6 @@ def basicFeatureExtractorDigit(datum):
   Returns a set of pixel features indicating whether
   each pixel in the provided datum is white (0) or gray/black (1)
   """
-  a = datum.getPixels()
 
   features = util.Counter()
   for x in range(DIGIT_DATUM_WIDTH):
@@ -38,6 +35,7 @@ def basicFeatureExtractorDigit(datum):
         features[(x,y)] = 1
       else:
         features[(x,y)] = 0
+
   return features
 
 def basicFeatureExtractorFace(datum):
@@ -220,7 +218,7 @@ def readCommand( argv ):
     print ("Training set size should be a positive integer (you provided: %d)" % options.training)
     print (USAGE_STRING)
     sys.exit(2)
-    
+
   if options.smoothing <= 0:
     print ("Please provide a positive number for smoothing (you provided: %f)" % options.smoothing)
     print (USAGE_STRING)
@@ -306,14 +304,15 @@ def runClassifier(args, options):
     validationLabels = samples.loadLabelsFile("digitdata/validationlabels", numTest)
     rawTestData = samples.loadDataFile("digitdata/testimages", numTest,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
     testLabels = samples.loadLabelsFile("digitdata/testlabels", numTest)
-    
+
   
   # Extract features
-  print ("Extracting features...")
+
   trainingData = map(featureFunction, rawTrainingData)
   validationData = map(featureFunction, rawValidationData)
   testData = map(featureFunction, rawTestData)
-  
+
+  print(list(trainingData))
   # Conduct training and testing
   print("Training...")
   classifier.train(trainingData, trainingLabels, validationData, validationLabels)

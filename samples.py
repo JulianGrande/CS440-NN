@@ -9,8 +9,8 @@
 import util
 
 ## Constants
-DATUM_WIDTH = 0 # in pixels
-DATUM_HEIGHT = 0 # in pixels
+DATUM_WIDTH = 28 # in pixels
+DATUM_HEIGHT = 28 # in pixels
 
 ## Module Classes
 
@@ -22,7 +22,7 @@ class Datum:
   easy-faces and background categories of the Caltech 101 dataset.
   
   
-  Each digit is 28x28 pixels, and each face/non-face image is 60x74 
+  Each digit is 28x28 pixels, and each face/non-face image is 60x74
   pixels, each pixel can take the following values:
     0: no edge (blank)
     1: gray pixel (+) [used for digits only]
@@ -58,10 +58,12 @@ class Datum:
     DATUM_WIDTH=width
     self.height = DATUM_HEIGHT
     self.width = DATUM_WIDTH
+    dict = {}
+    #print(dict['fds'])
     if data == None:
       data = [[' ' for i in range(DATUM_WIDTH)] for j in range(DATUM_HEIGHT)] 
-    self.pixels = util.arrayInvert(convertToInteger(data)) 
-    
+    self.pixels = util.arrayInvert(convertToInteger(data))
+
   def getPixel(self, column, row):
     """
     Returns the value of the pixel at column, row as 0, or 1.
@@ -72,6 +74,7 @@ class Datum:
     """
     Returns all pixels as a list of lists.
     """
+
     return self.pixels    
       
   def getAsciiString(self):
@@ -112,6 +115,7 @@ def loadDataFile(filename, n,width,height):
       print ("Truncating at %d examples (maximum)" % i)
       break
     items.append(Datum(data,DATUM_WIDTH,DATUM_HEIGHT))
+    print(items)
   return items
 
 import zipfile
