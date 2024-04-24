@@ -43,27 +43,38 @@ class PerceptronClassifier:
     (and thus represents a vector a values).
     """
         
-        self.features = trainingData[0].keys() # could be useful
+        percentages = [20, 30, 40, 50, 60, 70, 80, 90, 100]  # Define the percentages
+        
+        for percent in percentages:
+            # Determine the subset of training data based on the percentage
+            subset_size = int(len(trainingData) * (percent / 100.0))
+            subset_data = trainingData[:subset_size]
+            subset_labels = trainingLabels[:subset_size]
 
-        for iteration in range(self.max_iterations):
-            print("Starting iteration ", iteration, "...")
+            print(f"\nTraining with {percent}% of the data ({subset_size} samples)")
+            
+            # Reset weights for each iteration of training with different sizes
+            self.weights = {label: util.Counter() for label in self.legalLabels}
+            
+            # Train the perceptron with the specified data subset
+            for iteration in range(self.max_iterations):
+                for datum, label in zip(subset_data, subset_labels):
+                    # Classify the datum
+                    scores = util.Counter()
+                    for l in self.legalLabels:
+                        scores[l] = self.weights[l] * datum
+                    guessedLabel = scores.argMax()
 
-            for i in range(len(trainingData)):
-                currentVectors = trainingData[i] # store current vectors for the ith training example
-                correctLabel = trainingLabels[i] # store correct label for ith training example
+                    # Update weights if the guess was incorrect
+                    if guessedLabel != label:
+                        self.weights[label] += datum  # Strengthen correct weights
+                        self.weights[guessedLabel] -= datum  # Weaken incorrect weights
 
-                bestScore = float('-inf')
-                predictedLabel = None # hold label with highest score
-
-                for label in self.legalLabels:
-                    dotProduct = sum(currentVectors[vec] * self.weights[label][vec] for vec in currentVectors)
-                    if dotProduct > bestScore:
-                        bestScore = dotProduct
-                        predictedLabel = label
-                
-                if predictedLabel != correctLabel:
-                    self.weights[correctLabel] += currentVectors
-                    self.weights[predictedLabel] -= currentVectors
+            # Validate and print accuracy for this subset
+            guesses = self.classify(validationData)
+            correct_count = sum([guesses[i] == validationLabels[i] for i in range(len(validationLabels))])
+            accuracy = (correct_count / len(validationLabels)) * 100
+            print(f"Validation accuracy with {percent}% training data: {accuracy:.2f}%")
 
     def classify(self, data):
         """
