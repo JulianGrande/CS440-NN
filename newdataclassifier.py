@@ -167,13 +167,12 @@ def readCommand( argv ):
   from optparse import OptionParser
   parser = OptionParser(USAGE_STRING)
   parser.add_option('-c', '--classifier', help=default('The type of classifier'),
-                    choices=['mostFrequent', 'nb', 'naiveBayes', 'perceptron', 'mira', 'minicontest'],
-                    default='mostFrequent')
+                    choices=['perceptron', 'neural network'],
+                    default='perceptron')
   parser.add_option('-d', '--data', help=default('Dataset to use'), choices=['digits', 'faces'], default='digits')
-  parser.add_option('-t', '--training', help=default('The size of the training set'), default=100, type="int")
+  parser.add_option('-t', '--training', help=default('The size of the training set'), default=5000, type="int") #face train labels is 451
   parser.add_option('-f', '--features', help=default('Whether to use enhanced features'), default=False,
                     action="store_true")
-  parser.add_option('-o', '--odds', help=default('Whether to compute odds ratios'), default=False, action="store_true")
   parser.add_option('-1', '--label1', help=default("First label in an odds ratio comparison"), default=0, type="int")
   parser.add_option('-2', '--label2', help=default("Second label in an odds ratio comparison"), default=1, type="int")
   parser.add_option('-w', '--weights', help=default('Whether to print weights'), default=False, action="store_true")
