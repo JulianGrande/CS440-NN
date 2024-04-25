@@ -7,7 +7,7 @@
 # For more info, see http://inst.eecs.berkeley.edu/~cs188/sp09/pacman.html
 
 import util
-
+import numpy
 ## Constants
 DATUM_WIDTH = 28 # in pixels
 DATUM_HEIGHT = 28 # in pixels
@@ -61,7 +61,7 @@ class Datum:
     dict = {}
     #print(dict['fds'])
     if data == None:
-      data = [[' ' for i in range(DATUM_WIDTH)] for j in range(DATUM_HEIGHT)] 
+      data = [[' ' for i in range(DATUM_WIDTH)] for j in range(DATUM_HEIGHT)]
     self.pixels = util.arrayInvert(convertToInteger(data))
 
   def getPixel(self, column, row):
@@ -115,7 +115,6 @@ def loadDataFile(filename, n,width,height):
       print ("Truncating at %d examples (maximum)" % i)
       break
     items.append(Datum(data,DATUM_WIDTH,DATUM_HEIGHT))
-    print(items)
   return items
 
 import zipfile
@@ -169,7 +168,7 @@ def convertToInteger(data):
   if type(data) != type([]):
     return IntegerConversionFunction(data)
   else:
-    return map(convertToInteger, data)
+    return numpy.array(list(map(convertToInteger, data)))
 
 # Testing
 

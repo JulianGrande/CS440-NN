@@ -27,7 +27,6 @@ def basicFeatureExtractorDigit(datum):
   Returns a set of pixel features indicating whether
   each pixel in the provided datum is white (0) or gray/black (1)
   """
-
   features = util.Counter()
   for x in range(DIGIT_DATUM_WIDTH):
     for y in range(DIGIT_DATUM_HEIGHT):
@@ -308,11 +307,10 @@ def runClassifier(args, options):
   
   # Extract features
 
-  trainingData = map(featureFunction, rawTrainingData)
+  trainingData = list(map(featureFunction, rawTrainingData))
   validationData = map(featureFunction, rawValidationData)
   testData = map(featureFunction, rawTestData)
 
-  print(list(trainingData))
   # Conduct training and testing
   print("Training...")
   classifier.train(trainingData, trainingLabels, validationData, validationLabels)
