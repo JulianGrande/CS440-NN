@@ -41,7 +41,7 @@ class PerceptronClassifier:
     datum is a counter from features to values for those features
     (and thus represents a vector a values).
     """
-        print(dict(trainingData[0])[(0,0)])
+        print(trainingData[(0,0)])
 
 
         percentages = [20, 30, 40, 50, 60, 70, 80, 90, 100]

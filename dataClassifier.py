@@ -313,7 +313,7 @@ def runClassifier(args, options):
 
   # Conduct training and testing
   print("Training...")
-  classifier.train(trainingData, trainingLabels, validationData, validationLabels)
+  classifier.train(dict(trainingData[0]), trainingLabels, validationData, validationLabels)
   print("Validating...")
   guesses = classifier.classify(validationData)
   correct = [guesses[i] == validationLabels[i] for i in range(len(validationLabels))].count(True)
