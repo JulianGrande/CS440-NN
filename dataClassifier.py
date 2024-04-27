@@ -309,16 +309,17 @@ def runClassifier(args, options):
   if options.classifier != 'nn':
       # Conduct training and testing
       print("Training...")
-      classifier.train(dict(trainingData), trainingLabels, dict(validationData), validationLabels)
+      #classifier.train(dict(trainingData), trainingLabels, dict(validationData), validationLabels)
+      classifier.train(trainingData, trainingLabels, validationData, validationLabels)
       print("Validating...")
-      guesses = classifier.classify(dict(validationData[0]))
+      guesses = classifier.classify(validationData)
       correct = [guesses[i] == validationLabels[i] for i in range(len(validationLabels))].count(True)
       print (str(correct), ("correct out of " + str(len(validationLabels)) + " (%.1f%%).") % (100.0 * correct / len(validationLabels)))
       print ("Testing...")
-      guesses = classifier.classify(dict(testData[0]))
+      guesses = classifier.classify(testData)
       correct = [guesses[i] == testLabels[i] for i in range(len(testLabels))].count(True)
       print (str(correct), ("correct out of " + str(len(testLabels)) + " (%.1f%%).") % (100.0 * correct / len(testLabels)))
-      analysis(classifier, guesses, testLabels, dict(testData[0]), rawTestData, printImage)
+      analysis(classifier, guesses, testLabels, testData, rawTestData, printImage)
 
       # do odds ratio computation if specified at command line
       if((options.odds) & (options.classifier == "naiveBayes" or (options.classifier == "nb")) ):
