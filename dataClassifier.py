@@ -14,6 +14,7 @@ import perceptron
 import samples
 import sys
 import util
+import neuralnetwork
 
 TEST_SET_SIZE = 100
 DIGIT_DATUM_WIDTH=28
@@ -162,7 +163,7 @@ def readCommand( argv ):
   from optparse import OptionParser  
   parser = OptionParser(USAGE_STRING)
   
-  parser.add_option('-c', '--classifier', help=default('The type of classifier'), choices=['mostFrequent', 'nb', 'naiveBayes', 'perceptron', 'mira', 'minicontest'], default='mostFrequent')
+  parser.add_option('-c', '--classifier', help=default('The type of classifier'), choices=['mostFrequent', 'nb', 'naiveBayes', 'perceptron', 'mira', 'minicontest','nn'], default='mostFrequent')
   parser.add_option('-d', '--data', help=default('Dataset to use'), choices=['digits', 'faces'], default='digits')
   parser.add_option('-t', '--training', help=default('The size of the training set'), default=100, type="int")
   parser.add_option('-f', '--features', help=default('Whether to use enhanced features'), default=False, action="store_true")
@@ -241,16 +242,8 @@ def readCommand( argv ):
         print ("using smoothing parameter k=%f for naivebayes" %  options.smoothing)
   elif(options.classifier == "perceptron"):
     classifier = perceptron.PerceptronClassifier(legalLabels,options.iterations)
-  elif(options.classifier == "mira"):
-    classifier = mira.MiraClassifier(legalLabels, options.iterations)
-    if (options.autotune):
-        print ("using automatic tuning for MIRA")
-        classifier.automaticTuning = True
-    else:
-        print ("using default C=0.001 for MIRA")
-  elif(options.classifier == 'minicontest'):
-    import minicontest
-    classifier = minicontest.contestClassifier(legalLabels)
+  elif(options.classifier == 'nn'):
+    classifier = neuralnetwork.NeuralNetwork()
   else:
     print ("Unknown classifier:", options.classifier)
     print (USAGE_STRING)
@@ -289,6 +282,7 @@ def runClassifier(args, options):
   numTraining = options.training
   numTest = options.test
 
+  print(options.data)
   if(options.data=="faces"):
     rawTrainingData = samples.loadDataFile("facedata/facedatatrain", numTraining,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
     trainingLabels = samples.loadLabelsFile("facedata/facedatatrainlabels", numTraining)
@@ -312,36 +306,41 @@ def runClassifier(args, options):
   testData = list(map(featureFunction, rawTestData))
 
 
-  # Conduct training and testing
-  print("Training...")
-  classifier.train(dict(trainingData[0]), trainingLabels, dict(validationData[0]), validationLabels)
-  print("Validating...")
-  guesses = classifier.classify(dict(validationData[0]))
-  correct = [guesses[i] == validationLabels[i] for i in range(len(validationLabels))].count(True)
-  print (str(correct), ("correct out of " + str(len(validationLabels)) + " (%.1f%%).") % (100.0 * correct / len(validationLabels)))
-  print ("Testing...")
-  guesses = classifier.classify(dict(testData[0]))
-  correct = [guesses[i] == testLabels[i] for i in range(len(testLabels))].count(True)
-  print (str(correct), ("correct out of " + str(len(testLabels)) + " (%.1f%%).") % (100.0 * correct / len(testLabels)))
-  analysis(classifier, guesses, testLabels, dict(testData[0]), rawTestData, printImage)
-  
-  # do odds ratio computation if specified at command line
-  if((options.odds) & (options.classifier == "naiveBayes" or (options.classifier == "nb")) ):
-    label1, label2 = options.label1, options.label2
-    features_odds = classifier.findHighOddsFeatures(label1,label2)
-    if(options.classifier == "naiveBayes" or options.classifier == "nb"):
-      string3 = "=== Features with highest odd ratio of label %d over label %d ===" % (label1, label2)
-    else:
-      string3 = "=== Features for which weight(label %d)-weight(label %d) is biggest ===" % (label1, label2)    
-      
-    print (string3)
-    printImage(features_odds)
+  if options.classifier != 'nn':
+      # Conduct training and testing
+      print("Training...")
+      classifier.train(dict(trainingData), trainingLabels, dict(validationData), validationLabels)
+      print("Validating...")
+      guesses = classifier.classify(dict(validationData[0]))
+      correct = [guesses[i] == validationLabels[i] for i in range(len(validationLabels))].count(True)
+      print (str(correct), ("correct out of " + str(len(validationLabels)) + " (%.1f%%).") % (100.0 * correct / len(validationLabels)))
+      print ("Testing...")
+      guesses = classifier.classify(dict(testData[0]))
+      correct = [guesses[i] == testLabels[i] for i in range(len(testLabels))].count(True)
+      print (str(correct), ("correct out of " + str(len(testLabels)) + " (%.1f%%).") % (100.0 * correct / len(testLabels)))
+      analysis(classifier, guesses, testLabels, dict(testData[0]), rawTestData, printImage)
 
-  if((options.weights) & (options.classifier == "perceptron")):
-    for l in classifier.legalLabels:
-      features_weights = classifier.findHighWeightFeatures(l)
-      print ("=== Features with high weight for label %d ==="%l)
-      printImage(features_weights)
+      # do odds ratio computation if specified at command line
+      if((options.odds) & (options.classifier == "naiveBayes" or (options.classifier == "nb")) ):
+        label1, label2 = options.label1, options.label2
+        features_odds = classifier.findHighOddsFeatures(label1,label2)
+        if(options.classifier == "naiveBayes" or options.classifier == "nb"):
+          string3 = "=== Features with highest odd ratio of label %d over label %d ===" % (label1, label2)
+        else:
+          string3 = "=== Features for which weight(label %d)-weight(label %d) is biggest ===" % (label1, label2)
+
+        print (string3)
+        printImage(features_odds)
+
+      if((options.weights) & (options.classifier == "perceptron")):
+        for l in classifier.legalLabels:
+          features_weights = classifier.findHighWeightFeatures(l)
+          print ("=== Features with high weight for label %d ==="%l)
+          printImage(features_weights)
+  else:
+    print('Training...')
+
+    neuralnetwork.NeuralNetwork.input_layer(trainingData, trainingLabels, validationData, validationLabels)
 
 if __name__ == '__main__':
   # Read input
