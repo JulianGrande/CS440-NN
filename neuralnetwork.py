@@ -9,23 +9,20 @@ class NeuralNetwork:
         print(len(validationLabels))
 
         weights = np.random.uniform(-0.5, 0.5, (10, 784))
+        biased = np.random.uniform(-0.5, 0.5, (10, 1))
 
 
-        count = 0
         epoch = 1
+        counter = 0
         for epoch in range(epoch):
-            for img in trainingData:
-                pixel_vector = np.array(dict(img).values())
-                print(pixel_vector)
+            for img,label in zip(trainingData,trainingLabels):
+                pixel_vector = np.array(list(img.values()))
+                label_vector = np.zeros(10)
+                label_vector[label] = 1
+
+                print(pixel_vector * weights[counter])
+                counter += 1
 
 
 
-        #for label in trainingLabels:
-        #    vector = np.zeros(10)
-        #    vector[label] = 1
 
-            #print(vector)
-
-
-
-        #print(trainingData)
