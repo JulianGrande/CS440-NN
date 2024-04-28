@@ -309,7 +309,8 @@ def runClassifier(args, options):
   if options.classifier != 'nn':
       # Conduct training and testing
       print("Training...")
-      #To run, do python dataClassifier.py -c perceptron -t 5000
+      #To run, do python dataClassifier.py -c perceptron -t 5000 : for digits
+      #To run, do python dataClassifier.py -c perceptron -d faces -t 451 : for faces
       classifier.train(trainingData, trainingLabels, validationData, validationLabels)
       print("Validating...")
       guesses = classifier.classify(validationData)

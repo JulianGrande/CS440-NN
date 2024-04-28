@@ -44,7 +44,7 @@ class PerceptronClassifier:
         start_time = time.time()  # Record the start time
 
         while True:
-            # Loop through the percentages: 20%, 30%, ..., 100%
+            # Loop through the percentages: 10%, 20%, 30%, ..., 100%
             for percentage in range(10, 101, 10):
                 if time.time() - start_time >= time_limit:
                     print("Training terminated due to time limit.")
