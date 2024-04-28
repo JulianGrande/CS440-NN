@@ -40,7 +40,7 @@ class PerceptronClassifier:
         continues until the specified time limit is reached.
         """
         total_samples = len(trainingData)
-        time_limit = 180  # 3 minutes in seconds
+        time_limit = 210  # 3.5 minutes in seconds
         start_time = time.time()  # Record the start time
 
         while True:
