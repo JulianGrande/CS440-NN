@@ -9,6 +9,9 @@
 # Perceptron implementation
 
 import util
+import numpy as np
+import time
+import random
 PRINT = True
 
 class PerceptronClassifier:
@@ -32,62 +35,61 @@ class PerceptronClassifier:
 
     def train(self, trainingData, trainingLabels, validationData, validationLabels):
         """
-    The training loop for the perceptron passes through the training data several
-    times and updates the weight vector for each label based on classification errors.
-    See the project description for details. 
+        Train the perceptron with incremental subsets of training data.
+        The function loops through the subsets (20%, 30%, ..., 100%) and
+        continues until the specified time limit is reached.
+        """
+        total_samples = len(trainingData)
+        time_limit = 180  # 3 minutes in seconds
+        start_time = time.time()  # Record the start time
 
-    Use the provided self.weights[label] data structure so that
-    the classify method works correctly. Also, recall that a
-    datum is a counter from features to values for those features
-    (and thus represents a vector a values).
-    """
-        print(trainingLabels)
+        while True:
+            # Loop through the percentages: 20%, 30%, ..., 100%
+            for percentage in range(10, 101, 10):
+                if time.time() - start_time >= time_limit:
+                    print("Training terminated due to time limit.")
+                    return  # Exit the loop if time is up
 
+                subset_start_time = time.time()  # Record time for this subset
+                subset_size = int(total_samples * (percentage / 100.0))
+                training_subset = random.sample(list(zip(trainingData, trainingLabels)), subset_size)
+                subset_data = [x[0] for x in training_subset]
+                subset_labels = [x[1] for x in training_subset]
 
-        percentages = [20, 30, 40, 50, 60, 70, 80, 90, 100]
+                # Train with the current subset
+                for _ in range(self.max_iterations):  # Iterate over the subset
+                    for datum, label in zip(subset_data, subset_labels):
+                        predicted = self.classify_single(datum)
+                        if predicted != label:
+                            # Update the weights: Add the feature set for the correct label,
+                            # subtract for the incorrect label
+                            self.weights[label] += datum
+                            self.weights[predicted] -= datum
 
-        for percent in percentages:
+                subset_end_time = time.time()  # End time for this subset
+                subset_duration = subset_end_time - subset_start_time
+                print(f"Training time for {percentage}% of data: {subset_duration:.2f} seconds")
 
-            subset_size = int(len(trainingData) * (percent / 100.0))
-            subset_data = trainingData[:subset_size]
-            subset_labels = trainingLabels[:subset_size]
-
-            print(f"\nTraining with {percent}% of the data ({subset_size} samples)")
-
-            self.weights = {label: util.Counter() for label in self.legalLabels}
-
-            for iteration in range(self.max_iterations):
-                for datum, label in zip(subset_data, subset_labels):
-
-                    scores = util.Counter()
-                    for l in self.legalLabels:
-                        scores[l] = self.weights[l] * datum
-                    guessedLabel = scores.argMax()
-
-                    if guessedLabel != label:
-                        self.weights[label] += datum
-                        self.weights[guessedLabel] -= datum
-
-            guesses = self.classify(validationData)
-            correct_count = sum([guesses[i] == validationLabels[i] for i in range(len(validationLabels))])
-            accuracy = (correct_count / len(validationLabels)) * 100
-            print(f"Validation accuracy with {percent}% training data: {accuracy:.2f}%")
+        print("Training complete.")
 
     def classify(self, data):
         """
-    Classifies each datum as the label that most closely matches the prototype vector
-    for that label.  See the project description for details.
-    
-    Recall that a datum is a util.counter... 
-    """
+        Classify a list of data points and return the list of guessed labels.
+        """
         guesses = []
         for datum in data:
-            vectors = util.Counter()
-            for l in self.legalLabels:
-                vectors[l] = self.weights[l] * datum
-            guesses.append(vectors.argMax())
-            return guesses
+            predicted = self.classify_single(datum)
+            guesses.append(predicted)
+        return guesses
 
+    def classify_single(self, datum):
+        """
+        Classify a single datum as the label with the highest dot product with its weight vector.
+        """
+        vectors = util.Counter()
+        for label in self.legalLabels:
+            vectors[label] = self.weights[label] * datum  # Dot product
+        return vectors.argMaxP()
 
     def findHighWeightFeatures(self, label):
         """

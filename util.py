@@ -172,6 +172,20 @@ class Counter(dict):
     maxIndex = values.index(max(values))
     return all[maxIndex][0]
   
+  def argMaxP(self):
+    """
+    Returns the key with the highest value.
+    """
+    if len(self) == 0:
+        return None
+
+    # Cast to list to ensure subscriptable behavior
+    all_items = list(self.items())
+    values = [x[1] for x in all_items]
+
+    maxIndex = values.index(max(values))
+    return all_items[maxIndex][0]
+  
   def sortedKeys(self):
     """
     Returns a list of keys sorted by their values.  Keys
