@@ -287,7 +287,7 @@ def runClassifier(args, options):
     rawTrainingData = samples.loadDataFile("facedata/facedatatrain", numTraining,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
     trainingLabels = samples.loadLabelsFile("facedata/facedatatrainlabels", numTraining)
     rawValidationData = samples.loadDataFile("facedata/facedatatrain", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
-    validationLabels = samples.loadLabelsFile("facedata/facedatatrainlabels", numTest)
+    validationLabels = samples.loadLabelsFile("facedata/facedatatrainlabels", numTest) #Change this to be 350 instead of same as number of testing labels
     rawTestData = samples.loadDataFile("facedata/facedatatest", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
     testLabels = samples.loadLabelsFile("facedata/facedatatestlabels", numTest)
   else:
@@ -309,8 +309,8 @@ def runClassifier(args, options):
   if options.classifier != 'nn':
       # Conduct training and testing
       print("Training...")
-      #To run, do python dataClassifier.py -c perceptron -t 5000 : for digits
-      #To run, do python dataClassifier.py -c perceptron -d faces -t 451 : for faces
+      #To run, do python dataClassifier.py -c perceptron -t 5000 -s 1000 : for digits
+      #To run, do python dataClassifier.py -c perceptron -d faces -t 451 -s 150 : for faces
       classifier.train(trainingData, trainingLabels, validationData, validationLabels)
       print("Validating...")
       guesses = classifier.classify(validationData)
