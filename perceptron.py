@@ -12,14 +12,14 @@ import util
 import numpy as np
 import time
 import random
+import statistics
 PRINT = True
 
 class PerceptronClassifier:
     """
   Perceptron classifier.
   
-  Note that the variable 'datum' in this code refers to a counter of features
-  (not to a raw samples.Datum).
+  Note that the variable 'datum' in this code refers to a counter of features.
   """
     def __init__(self, legalLabels, max_iterations):
         self.legalLabels = legalLabels
@@ -43,16 +43,20 @@ class PerceptronClassifier:
         time_limit = 210  # 3.5 minutes in seconds
         start_time = time.time()  # Record the start time
 
+        errors = [] #list to hold error rates per each iteration of classification of data
         while True:
             # Loop through the percentages: 10%, 20%, 30%, ..., 100%
             for percentage in range(10, 101, 10):
                 if time.time() - start_time >= time_limit:
                     print("Training terminated due to time limit.")
+                    if errors:
+                        error_std_dev = statistics.stdev(errors) #calcualte std dev of errors
+                        print(f"Standard Deviation of prediction errors: {error_std_dev:.3f}")
                     return  # Exit the loop if time is up
 
                 subset_start_time = time.time()  # Record time for this subset
-                subset_size = int(total_samples * (percentage / 100.0))
-                training_subset = random.sample(list(zip(trainingData, trainingLabels)), subset_size)
+                subset_size = int(total_samples * (percentage / 100.0)) #subset size
+                training_subset = random.sample(list(zip(trainingData, trainingLabels)), subset_size) #randomly select % of the data
                 subset_data = [x[0] for x in training_subset]
                 subset_labels = [x[1] for x in training_subset]
 
@@ -66,11 +70,17 @@ class PerceptronClassifier:
                             self.weights[label] += datum
                             self.weights[predicted] -= datum
 
+                validationPred = self.classify(validationData)
+                subsetError =  sum(1 for pred, true in zip(validationPred, validationLabels) if pred != true)
+                erate = subsetError / len(validationLabels)
+                errors.append(erate)
+
+                print(f"Prediction error for {percentage}% data: {erate: .2%}")
+
                 subset_end_time = time.time()  # End time for this subset
                 subset_duration = subset_end_time - subset_start_time
-                print(f"Training time for {percentage}% of data: {subset_duration:.2f} seconds")
+                print(f"Training time for {percentage}% of data: {subset_duration:.2f} seconds\n")
 
-        print("Training complete.")
 
     def classify(self, data):
         """
