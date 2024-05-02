@@ -1,33 +1,27 @@
 import numpy as np
 import time
 import util
+import random
 class NeuralNetwork:
 
-    def __init__(self, legalLabels, max_iterations):
-        self.legalLabels = legalLabels
-        self.type = "nn"
-        self.max_iterations = max_iterations
-        self.weights = {}
-        for label in legalLabels:
-            self.weights[label] = util.Counter()
-
-    def input_layer(self, trainingData, trainingLabels, validationData, validationLabels):
-        print(len(trainingData))
-        print(len(trainingLabels))
-        #print(len(validationData))
-        print(len(validationLabels))
+    def input_layer(trainingData, trainingLabels, validationData, validationLabels):
 
         w_i_h = np.random.uniform(-0.5, 0.5, (20, 784)) # weights that brings 784 to 20 nodes
         w_h_o = np.random.uniform(-0.5, 0.5, (10, 20)) # weights that brings 20 nodes to 10 nodes to compare
         b_i_h = np.zeros((20, 1))
         b_h_o = np.zeros((10, 1))
 
+        print(len(trainingData))
+        print(len(w_i_h))
+        #training_pixels = np.array(trainingData)
+
         learn_rate = 0.01
         time_limit = 210
 
-        total_samples = len(images)
+        total_samples = len(trainingData)
         start_time = time.time()
 
+        iterations = 10
         while True:
             for percentage in range(10, 101, 10):
                 if time.time() - start_time >= time_limit:
@@ -40,7 +34,7 @@ class NeuralNetwork:
                 subset_data = [x[0] for x in training_subset]
                 subset_labels = [x[1] for x in training_subset]
                 nr_correct = 0
-                for _ in range(self.max_iterations):  # Iterate over the subset
+                for _ in range(iterations):  # Iterate over the subset
                     for datum, label in zip(subset_data, subset_labels):
                         datum.shape += (1,)
                         label.shape += (1,)
@@ -54,10 +48,10 @@ class NeuralNetwork:
                         o = 1 / (1 + np.exp(-o_pre))
 
                         # Cost / Error calculation
-                        e = 1 / len(o) * np.sum((o - l) ** 2)
+                        e = 1 / len(o) * np.sum((o - label) ** 2)
 
                         # Backpropagation output -> hidden (cost function derivative)
-                        delta_o = o - l
+                        delta_o = o - label
                         w_h_o += -learn_rate * delta_o @ h.T
                         b_h_o += -learn_rate * delta_o
 
@@ -67,7 +61,7 @@ class NeuralNetwork:
                         b_i_h += -learn_rate * delta_h
 
                         # Accuracy calculation
-                        nr_correct += int(np.argmax(o) == np.argmax(l))
+                        nr_correct += int(np.argmax(o) == np.argmax(label))
 
 
 

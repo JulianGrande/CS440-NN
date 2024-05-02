@@ -232,14 +232,6 @@ def readCommand( argv ):
 
   if(options.classifier == "mostFrequent"):
     classifier = mostFrequent.MostFrequentClassifier(legalLabels)
-  elif(options.classifier == "naiveBayes" or options.classifier == "nb"):
-    classifier = naiveBayes.NaiveBayesClassifier(legalLabels)
-    classifier.setSmoothing(options.smoothing)
-    if (options.autotune):
-        print ("using automatic tuning for naivebayes")
-        classifier.automaticTuning = True
-    else:
-        print ("using smoothing parameter k=%f for naivebayes" %  options.smoothing)
   elif(options.classifier == "perceptron"):
     classifier = perceptron.PerceptronClassifier(legalLabels,options.iterations)
   elif(options.classifier == 'nn'):
