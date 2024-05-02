@@ -174,7 +174,7 @@ class Counter(dict):
   
   def argMaxP(self):
     """
-    Returns the key with the highest value.
+    Returns the key with the highest value, but for items in a list.
     """
     if len(self) == 0:
         return None

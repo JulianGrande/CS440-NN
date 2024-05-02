@@ -82,6 +82,7 @@ class PerceptronClassifier:
                 print(f"Training time for {percentage}% of data: {subset_duration:.2f} seconds\n")
 
 
+    #all data is rolled into a list, so this method loops through the list of datums
     def classify(self, data):
         """
         Classify a list of data points and return the list of guessed labels.
@@ -92,6 +93,7 @@ class PerceptronClassifier:
             guesses.append(predicted)
         return guesses
 
+    #helper method to classify singular entries of datums
     def classify_single(self, datum):
         """
         Classify a single datum as the label with the highest dot product with its weight vector.
