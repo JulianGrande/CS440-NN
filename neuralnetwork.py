@@ -6,8 +6,17 @@ class NeuralNetwork:
 
     def input_layer(trainingData, trainingLabels, validationData, validationLabels):
 
-        w_i_h = np.random.uniform(-0.5, 0.5, (20, 784)) # weights that brings 784 to 20 nodes
-        w_h_o = np.random.uniform(-0.5, 0.5, (10, 20)) # weights that brings 20 nodes to 10 nodes to compare
+        # input layer: 784 neurons
+        # hidden layer: 20 neurons
+        # output layer: 10 neurons
+
+        # initialize weights
+
+        w_i_h = np.random.uniform(-0.5, 0.5, (20, 784))
+        w_h_o = np.random.uniform(-0.5, 0.5, (10, 20))
+
+        # initialize biases
+
         b_i_h = np.zeros((20, 1))
         b_h_o = np.zeros((10, 1))
 
@@ -36,15 +45,17 @@ class NeuralNetwork:
                 nr_correct = 0
                 for _ in range(iterations):  # Iterate over the subset
                     for datum, label in zip(subset_data, subset_labels):
-                        datum.shape += (1,)
-                        label.shape += (1,)
 
-                        # Forward propagation input -> hidden
-                        h_pre = b_i_h + w_i_h @ img
+                        # forward propagation -> input to hidden layer
+                        # h_pre = bias_inputlayer_to_hiddenlayer + dot_product of input_layer_weights, input_data
+                        new_wih = w_i_h.T
+                        h_pre = b_i_h + np.dot(subset_data, new_wih)
                         h = 1 / (1 + np.exp(-h_pre))
+                        # subset_data: (500,)
+                        # w_i_h: (20, 784)
 
-                        # Forward propagation hidden -> output
-                        o_pre = b_h_o + w_h_o @ h
+                        # forward propagation -> hidden to output
+                        o_pre = b_h_o + np.dot(subset_data, w_h_o)
                         o = 1 / (1 + np.exp(-o_pre))
 
                         # Cost / Error calculation

@@ -64,6 +64,7 @@ class Datum:
       data = [[' ' for i in range(DATUM_WIDTH)] for j in range(DATUM_HEIGHT)]
     self.pixels = util.arrayInvert(convertToInteger(data))
 
+
   def getPixel(self, column, row):
     """
     Returns the value of the pixel at column, row as 0, or 1.
