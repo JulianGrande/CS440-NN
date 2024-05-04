@@ -6,7 +6,7 @@ import time
 import warnings
 class NeuralNetwork:
 
-    def input_layer(trainingData, trainingLabels, validationData, validationLabels,p_length):
+    def input_layer(trainingData, trainingLabels, validationData, validationLabels,p_length,output_length):
 
         # input layer: 784 neurons
         # hidden layer: 20 neurons
@@ -15,12 +15,12 @@ class NeuralNetwork:
 
 
         w_i_h = np.random.uniform(-0.5, 0.5, (20, p_length))
-        w_h_o = np.random.uniform(-0.5, 0.5, (10, 20))
+        w_h_o = np.random.uniform(-0.5, 0.5, (output_length, 20))
 
         # initialize biases
 
         b_i_h = np.zeros((20, 1))
-        b_h_o = np.zeros((10, 1))
+        b_h_o = np.zeros((output_length, 1))
 
 
 
