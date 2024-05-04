@@ -40,7 +40,7 @@ class PerceptronClassifier:
         continues until the specified time limit is reached.
         """
         total_samples = len(trainingData)
-        time_limit = timeL  # 3.5 minutes in seconds
+        time_limit = timeL 
         start_time = time.time()  # Record the start time
 
         errors = [] #list to hold error rates per each iteration of classification of data
@@ -61,23 +61,23 @@ class PerceptronClassifier:
                 subset_labels = [x[1] for x in training_subset]
 
                 # Train with the current subset
-                for _ in range(self.max_iterations):  # Iterate over the subset
+                for _ in range(self.max_iterations): 
                     for datum, label in zip(subset_data, subset_labels):
                         predicted = self.classify_single(datum)
                         if predicted != label:
-                            # Update the weights: Add the feature set for the correct label,
-                            # subtract for the incorrect label
+                            # Update the weights
                             self.weights[label] += datum
                             self.weights[predicted] -= datum
 
+                #Cross check for prediction error calculation
                 validationPred = self.classify(validationData)
                 subsetError =  sum(1 for pred, true in zip(validationPred, validationLabels) if pred != true)
                 erate = subsetError / len(validationLabels)
                 errors.append(erate)
-
                 print(f"Prediction error for {percentage}% data: {erate: .2%}")
 
-                subset_end_time = time.time()  # End time for this subset
+                #Subset as function of data subset size as %
+                subset_end_time = time.time()
                 subset_duration = subset_end_time - subset_start_time
                 print(f"Training time for {percentage}% of data: {subset_duration:.2f} seconds\n")
 
@@ -103,6 +103,7 @@ class PerceptronClassifier:
             vectors[label] = self.weights[label] * datum  # Dot product
         return vectors.argMaxP()
 
+    #Not implemented
     def findHighWeightFeatures(self, label):
         """
     Returns a list of the 100 features with the greatest weight for some label
