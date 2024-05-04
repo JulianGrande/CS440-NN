@@ -14,7 +14,6 @@ class NeuralNetwork:
         # output layer: 10 neurons
 
 
-        validationData_len = len(validationData)
         warnings.filterwarnings('ignore')
 
 
@@ -33,9 +32,9 @@ class NeuralNetwork:
         learn_rate = 0.01
 
         nr_correct = 0
-        num_of_loops = 1
+
         start_time = int(time.time())
-        time_limit = start_time + 100
+        time_limit = start_time + 10
         while time_limit > time.time():
             for img, label in zip(trainingData, trainingLabels):
                 pixel_vector = np.array(list(img.values()))
@@ -73,12 +72,6 @@ class NeuralNetwork:
                 b_i_h += -learn_rate * delta_h
 
 
-
-            if nr_correct == nr_testing:
-                print("It took",num_of_loops,'loops to reach 100% acc')
-                break
-            num_of_loops += 1
-
             nr_correct = 0
 
         print("Validating...")
@@ -98,7 +91,7 @@ class NeuralNetwork:
             o_num = np.argmax(o)
             if o_num == labels:
                 count_correct+= 1
-        print(100 * count_correct / validationData_len)
+        print(100 * count_correct / len(validationData))
 
         print("Testing...")
         # Test data
@@ -116,7 +109,7 @@ class NeuralNetwork:
             o_num = np.argmax(o)
             if o_num == labels:
                 count_correct += 1
-        print(100 * count_correct / validationData_len)
+        print(100 * count_correct / len(testData))
 
 
 
