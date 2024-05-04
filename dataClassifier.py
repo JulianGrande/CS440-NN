@@ -309,7 +309,10 @@ def runClassifier(args, options):
       #To run, do python dataClassifier.py -c perceptron -t 5000 -s 1000 : for digits
       #To run, do python dataClassifier.py -c perceptron -d faces -t 451 -s 150 : for faces
 
-      time_limit = 120 # time in seconds to run the perceptron; 2 mins by default
+      #change dynamically for faces or digits using options.data == "" ??
+      time_limit = 180 # time in seconds to run the perceptron; 2.5 mins by default
+      if(options.data == "faces"):
+        time_limit = 60 #run perceptron for faces for 1 min by default
       if(input("demo? y/n\n") == 'y'):
         time_limit = 30 #30 seconds for demo purposes
 
