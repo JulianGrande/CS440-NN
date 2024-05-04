@@ -2,6 +2,7 @@ import numpy as np
 import time
 import util
 import random
+import time
 class NeuralNetwork:
 
     def input_layer(trainingData, trainingLabels, validationData, validationLabels,p_length):
@@ -23,15 +24,12 @@ class NeuralNetwork:
 
 
         learn_rate = 0.01
-        time_limit = 210
+
         nr_correct = 0
         total_samples = len(trainingData)
-        start_time = time.time()
-
-        iterations = 10
-
-        epochs = 3
-        for epoch in range(epochs):
+        start_time = int(time.time())
+        time_limit = start_time + 5
+        while time_limit > time.time():
             for img, label in zip(trainingData, trainingLabels):
                 pixel_vector = np.array(list(img.values()))
                 pixel_vector.shape +=(1,)
@@ -61,8 +59,7 @@ class NeuralNetwork:
                 delta_h = w_h_o.T @ delta_o * (h * (1 - h))
                 w_i_h += -learn_rate * delta_h @ pixel_vector.T
                 b_i_h += -learn_rate * delta_h
-
-
+        print('DONE')
 
 
 
