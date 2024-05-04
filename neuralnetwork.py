@@ -35,7 +35,7 @@ class NeuralNetwork:
                 pixel_vector = np.array(list(img.values()))
                 pixel_vector.shape +=(1,)
 
-                label_vector = np.zeros(10)
+                label_vector = np.zeros(output_length)
                 label_vector[label] = 1
                 label_vector.shape +=(1,)
 
