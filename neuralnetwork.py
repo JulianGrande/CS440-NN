@@ -10,7 +10,7 @@ class NeuralNetwork:
         # hidden layer: 20 neurons
         # output layer: 10 neurons
 
-        # initialize weights
+
 
 
 
