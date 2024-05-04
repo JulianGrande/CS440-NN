@@ -7,11 +7,14 @@ import warnings
 from time import sleep
 class NeuralNetwork:
 
-    def input_layer(trainingData, trainingLabels, validationData,p_length,output_length):
+    def input_layer(trainingData, trainingLabels, validationLabels,validationData,testLabels, testData,p_length,output_length):
 
         # input layer: 784 neurons
         # hidden layer: 20 neurons
         # output layer: 10 neurons
+
+
+        validationData_len = len(validationData)
         warnings.filterwarnings('ignore')
 
         w_i_h = np.random.uniform(-0.5, 0.5, (20, p_length))
@@ -67,7 +70,44 @@ class NeuralNetwork:
                 print("It took",num_of_loops,'loops to reach 100% acc')
                 break
             num_of_loops += 1
+
             nr_correct = 0
+
+
+        ## Classify data
+        #count_correct = 0
+        #for data, labels in zip(validationData, validationLabels):
+        #    data_vector = np.array(list(data.values()))
+        #    data_vector.shape += (1,)
+#
+#
+        #    h_pre = b_i_h + w_i_h @ data_vector
+        #    h = 1 / (1 + np.exp(-h_pre))
+#
+        #    o_pre = b_h_o + w_h_o @ h
+        #    o = 1 / (1 + np.exp(-o_pre))
+#
+        #    o_num = np.argmax(o)
+        #    if o_num == labels:
+        #        count_correct+= 1
+        #print(count_correct / validationData_len)
+
+        # Test data
+        count_correct = 0
+        for data, labels in zip(testData, testLabels):
+            data_vector = np.array(list(data.values()))
+            data_vector.shape += (1,)
+
+            h_pre = b_i_h + w_i_h @ data_vector
+            h = 1 / (1 + np.exp(-h_pre))
+
+            o_pre = b_h_o + w_h_o @ h
+            o = 1 / (1 + np.exp(-o_pre))
+
+            o_num = np.argmax(o)
+            if o_num == labels:
+                count_correct += 1
+        print(count_correct / validationData_len)
 
 
 
