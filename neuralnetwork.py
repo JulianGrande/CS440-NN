@@ -8,7 +8,7 @@ from time import sleep
 import statistics
 class NeuralNetwork:
 
-    def input_layer(trainingData, trainingLabels, validationLabels,validationData,testLabels, testData,p_length,output_length):
+    def input_layer(trainingData, trainingLabels, validationLabels,validationData,testLabels, testData,p_length,output_length, timeL):
 
         # input layer: 784 neurons
         # hidden layer: 20 neurons
@@ -35,7 +35,8 @@ class NeuralNetwork:
         nr_correct = 0
 
         start_time = int(time.time())
-        time_limit = start_time + 180
+        #time_limit = start_time + 180
+        time_limit = timeL
         errors = []
         while True:
             for percentage in range(10, 101, 10):

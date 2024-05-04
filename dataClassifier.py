@@ -312,8 +312,9 @@ def runClassifier(args, options):
       #change dynamically for faces or digits using options.data == "" ??
       time_limit = 180 # time in seconds to run the perceptron; 2.5 mins by default
       if(options.data == "faces"):
-        time_limit = 60 #run perceptron for faces for 1 min by default
+        time_limit = 30 # run perceptron for less time to prevent overfitting for faces
       if(input("demo? y/n\n") == 'y'):
+        print("\n")
         time_limit = 30 #30 seconds for demo purposes
 
       classifier.train(trainingData, trainingLabels, validationData, validationLabels, time_limit)
@@ -346,7 +347,13 @@ def runClassifier(args, options):
           printImage(features_weights)
   else:
     print('Training...')
-    neuralnetwork.NeuralNetwork.input_layer(trainingData, trainingLabels, validationLabels, validationData, testLabels,testData,pixel_length,output_length)
+
+    time_limit = 180
+    if(input("demo? y/n\n") == 'y'):
+      print("\n")
+      time_limit = 30
+
+    neuralnetwork.NeuralNetwork.input_layer(trainingData, trainingLabels, validationLabels, validationData, testLabels,testData,pixel_length,output_length, time_limit)
 
 if __name__ == '__main__':
   # Read input
