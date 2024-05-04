@@ -3,6 +3,7 @@ import time
 import util
 import random
 import time
+import warnings
 class NeuralNetwork:
 
     def input_layer(trainingData, trainingLabels, validationData, validationLabels,p_length):
@@ -10,7 +11,7 @@ class NeuralNetwork:
         # input layer: 784 neurons
         # hidden layer: 20 neurons
         # output layer: 10 neurons
-
+        warnings.filterwarnings('ignore')
 
 
         w_i_h = np.random.uniform(-0.5, 0.5, (20, p_length))
