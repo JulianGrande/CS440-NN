@@ -4,6 +4,7 @@ import util
 import random
 import time
 import warnings
+from time import sleep
 class NeuralNetwork:
 
     def input_layer(trainingData, trainingLabels, validationData, validationLabels,p_length,output_length):
@@ -26,7 +27,7 @@ class NeuralNetwork:
         learn_rate = 0.01
 
         nr_correct = 0
-        total_samples = len(trainingData)
+        num_of_loops = 1
         start_time = int(time.time())
         time_limit = start_time + 5
         while time_limit > time.time():
@@ -46,9 +47,10 @@ class NeuralNetwork:
                 o = 1 / (1 + np.exp(-o_pre))
 
                 e = 1 / len(o) * np.sum((o - label) ** 2)
-                nr_correct += int(np.argmax(o) == np.argmax(label))
 
-                delta_o = o - label
+                nr_correct += int(np.argmax(o) == np.argmax(label_vector))
+
+                delta_o = o - label_vector
 
 
                 w_h_o += -learn_rate * delta_o @ h.T
@@ -59,8 +61,10 @@ class NeuralNetwork:
                 delta_h = w_h_o.T @ delta_o * (h * (1 - h))
                 w_i_h += -learn_rate * delta_h @ pixel_vector.T
                 b_i_h += -learn_rate * delta_h
-            print(nr_correct)
-            print("Acc: ",round((nr_correct / len(trainingData)) * 100, 2))
+            if nr_correct == 100:
+                print("It took",num_of_loops,'loops to reach 100% acc')
+                break
+            num_of_loops += 1
             nr_correct = 0
 
 
