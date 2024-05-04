@@ -49,7 +49,6 @@ class NeuralNetwork:
                 # Forward Prop.
                 h_pre = b_i_h + w_i_h @ pixel_vector
                 h = 1 / (1 + np.exp(-h_pre))
-                print(h)
 
 
 
