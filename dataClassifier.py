@@ -282,6 +282,7 @@ def runClassifier(args, options):
     validationLabels = samples.loadLabelsFile("facedata/facedatatrainlabels", numTest) #Change this to be 350 instead of same as number of testing labels
     rawTestData = samples.loadDataFile("facedata/facedatatest", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
     testLabels = samples.loadLabelsFile("facedata/facedatatestlabels", numTest)
+    pixel_length = FACE_DATUM_WIDTH * FACE_DATUM_HEIGHT
   else:
     rawTrainingData = samples.loadDataFile("digitdata/trainingimages", numTraining,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
     trainingLabels = samples.loadLabelsFile("digitdata/traininglabels", numTraining)
@@ -289,9 +290,9 @@ def runClassifier(args, options):
     validationLabels = samples.loadLabelsFile("digitdata/validationlabels", numTest)
     rawTestData = samples.loadDataFile("digitdata/testimages", numTest,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
     testLabels = samples.loadLabelsFile("digitdata/testlabels", numTest)
+    pixel_length = DIGIT_DATUM_WIDTH * DIGIT_DATUM_HEIGHT
 
-  
-  # Extract features
+    # Extract features
 
   trainingData = list(map(featureFunction, rawTrainingData))
   validationData = list(map(featureFunction, rawValidationData))
@@ -333,8 +334,7 @@ def runClassifier(args, options):
           printImage(features_weights)
   else:
     print('Training...')
-
-    neuralnetwork.NeuralNetwork.input_layer(trainingData, trainingLabels, validationData, validationLabels)
+    neuralnetwork.NeuralNetwork.input_layer(trainingData, trainingLabels, validationData, validationLabels,pixel_length)
 
 if __name__ == '__main__':
   # Read input

@@ -4,7 +4,7 @@ import util
 import random
 class NeuralNetwork:
 
-    def input_layer(trainingData, trainingLabels, validationData, validationLabels):
+    def input_layer(trainingData, trainingLabels, validationData, validationLabels,p_length):
 
         # input layer: 784 neurons
         # hidden layer: 20 neurons
@@ -18,7 +18,7 @@ class NeuralNetwork:
 
 
 
-        w_i_h = np.random.uniform(-0.5, 0.5, (20, 784))
+        w_i_h = np.random.uniform(-0.5, 0.5, (20, p_length))
         w_h_o = np.random.uniform(-0.5, 0.5, (10, 20))
 
         # initialize biases
@@ -56,9 +56,6 @@ class NeuralNetwork:
                 e = 1 / len(o) * np.sum((o - label) ** 2)
                 nr_correct += int(np.argmax(o) == np.argmax(label))
 
-
-                delta_o = o - label
-
                 delta_o = o - label
 
 
@@ -68,10 +65,7 @@ class NeuralNetwork:
 
 
                 delta_h = w_h_o.T @ delta_o * (h * (1 - h))
-
                 w_i_h += -learn_rate * delta_h @ pixel_vector.T
-
-
                 b_i_h += -learn_rate * delta_h
 
 
