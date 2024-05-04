@@ -50,6 +50,22 @@ class NeuralNetwork:
                 h_pre = b_i_h + w_i_h @ pixel_vector
                 h = 1 / (1 + np.exp(-h_pre))
 
+                o_pre = b_h_o + w_h_o @ h
+                o = 1 / (1 + np.exp(-o_pre))
+
+                e = 1 / len(o) * np.sum((o - label) ** 2)
+
+                delta_o = o - label
+
+                delta_o = o - label
+                w_h_o += -learn_rate * delta_o @ h.T
+                b_h_o += -learn_rate * delta_o
+
+                delta_h = w_h_o.T @ delta_o * (h * (1 - h))
+                w_i_h += -learn_rate * delta_h @ img.T
+                b_i_h += -learn_rate * delta_h
+
+                nr_correct += int(np.argmax(o) == np.argmax(label))
 
 
 
