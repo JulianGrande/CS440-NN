@@ -279,8 +279,8 @@ def runClassifier(args, options):
     rawTrainingData = samples.loadDataFile("facedata/facedatatrain", numTraining,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
     trainingLabels = samples.loadLabelsFile("facedata/facedatatrainlabels", numTraining)
     rawValidationData = samples.loadDataFile("facedata/facedatatrain", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
-    #validationLabels = samples.loadLabelsFile("facedata/facedatatrainlabels", numTest) #Change this to be 350 instead of same as number of testing labels
-    validationlabels = samples.loadLabelsFile("facedata/facedatatrainlabels", 350)
+    validationLabels = samples.loadLabelsFile("facedata/facedatatrainlabels", numTest) #Change this to be 350 instead of same as number of testing labels
+    #validationLabels = samples.loadLabelsFile("facedata/facedatatrainlabels", 350)
     rawTestData = samples.loadDataFile("facedata/facedatatest", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
     testLabels = samples.loadLabelsFile("facedata/facedatatestlabels", numTest)
     pixel_length = FACE_DATUM_WIDTH * FACE_DATUM_HEIGHT
@@ -307,10 +307,11 @@ def runClassifier(args, options):
       print("Training...")
       #To run, do python dataClassifier.py -c perceptron -t 5000 -s 1000 : for digits
       #To run, do python dataClassifier.py -c perceptron -d faces -t 451 -s 150 : for faces
+
       time_limit = 210 # time in seconds to run the perceptron
       if(input("demo? y/n\n") == 'y'):
-        time_limit = 60 #1 minute for demo purposes
-        
+        time_limit = 30 #1 minute for demo purposes
+
       classifier.train(trainingData, trainingLabels, validationData, validationLabels, time_limit)
       print("Validating...")
       guesses = classifier.classify(validationData)
