@@ -58,12 +58,16 @@ class NeuralNetwork:
                 delta_o = o - label
 
                 delta_o = o - label
-                w_h_o += -learn_rate * delta_o @ h.T
-                b_h_o += -learn_rate * delta_o
+                #w_h_o += -learn_rate * delta_o @ h.T
+                w_h_o = w_h_o + (-learn_rate * delta_o @ h.T)
+                #b_h_o += -learn_rate * delta_o
+                b_h_o = b_h_o + (-learn_rate * delta_o)
 
                 delta_h = w_h_o.T @ delta_o * (h * (1 - h))
-                w_i_h += -learn_rate * delta_h @ img.T
-                b_i_h += -learn_rate * delta_h
+                #w_i_h += -learn_rate * delta_h @ img.T
+                w_i_h = w_i_h + (-learn_rate * delta_h @ pixel_vector)
+                #b_i_h += -learn_rate * delta_h
+                b_i_h = b_i_h + (-learn_rate * delta_h)
 
                 nr_correct += int(np.argmax(o) == np.argmax(label))
 
