@@ -60,7 +60,7 @@ class NeuralNetwork:
                 w_i_h += -learn_rate * delta_h @ pixel_vector.T
                 b_i_h += -learn_rate * delta_h
             print(nr_correct)
-            #print("Acc: ",round((nr_correct / len(trainingData)) * 100, 2))
+            print("Acc: ",round((nr_correct / len(trainingData)) * 100, 2))
             nr_correct = 0
 
 
