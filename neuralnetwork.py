@@ -7,7 +7,7 @@ import warnings
 from time import sleep
 class NeuralNetwork:
 
-    def input_layer(trainingData, trainingLabels, validationData, validationLabels,p_length,output_length):
+    def input_layer(trainingData, trainingLabels, validationData,p_length,output_length):
 
         # input layer: 784 neurons
         # hidden layer: 20 neurons
@@ -22,6 +22,7 @@ class NeuralNetwork:
         b_i_h = np.zeros((20, 1))
         b_h_o = np.zeros((output_length, 1))
 
+        nr_testing = len(trainingLabels)
 
 
         learn_rate = 0.01
@@ -29,7 +30,7 @@ class NeuralNetwork:
         nr_correct = 0
         num_of_loops = 1
         start_time = int(time.time())
-        time_limit = start_time + 5
+        time_limit = start_time + 10
         while time_limit > time.time():
             for img, label in zip(trainingData, trainingLabels):
                 pixel_vector = np.array(list(img.values()))
@@ -61,7 +62,8 @@ class NeuralNetwork:
                 delta_h = w_h_o.T @ delta_o * (h * (1 - h))
                 w_i_h += -learn_rate * delta_h @ pixel_vector.T
                 b_i_h += -learn_rate * delta_h
-            if nr_correct == 100:
+
+            if nr_correct == nr_testing:
                 print("It took",num_of_loops,'loops to reach 100% acc')
                 break
             num_of_loops += 1

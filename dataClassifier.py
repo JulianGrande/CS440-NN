@@ -341,7 +341,7 @@ def runClassifier(args, options):
           printImage(features_weights)
   else:
     print('Training...')
-    neuralnetwork.NeuralNetwork.input_layer(trainingData, trainingLabels, validationData, validationLabels,pixel_length,output_length)
+    neuralnetwork.NeuralNetwork.input_layer(trainingData, trainingLabels, validationData,pixel_length,output_length)
 
 if __name__ == '__main__':
   # Read input
