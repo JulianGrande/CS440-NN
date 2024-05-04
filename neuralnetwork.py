@@ -12,12 +12,6 @@ class NeuralNetwork:
 
 
 
-
-
-
-
-
-
         w_i_h = np.random.uniform(-0.5, 0.5, (20, p_length))
         w_h_o = np.random.uniform(-0.5, 0.5, (10, 20))
 
