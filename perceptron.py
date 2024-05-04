@@ -33,14 +33,14 @@ class PerceptronClassifier:
         assert len(weights) == len(self.legalLabels)
         self.weights == weights
 
-    def train(self, trainingData, trainingLabels, validationData, validationLabels):
+    def train(self, trainingData, trainingLabels, validationData, validationLabels, timeL):
         """
         Train the perceptron with incremental subsets of training data.
         The function loops through the subsets (20%, 30%, ..., 100%) and
         continues until the specified time limit is reached.
         """
         total_samples = len(trainingData)
-        time_limit = 210  # 3.5 minutes in seconds
+        time_limit = timeL  # 3.5 minutes in seconds
         start_time = time.time()  # Record the start time
 
         errors = [] #list to hold error rates per each iteration of classification of data
