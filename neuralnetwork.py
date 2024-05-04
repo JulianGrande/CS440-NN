@@ -46,10 +46,18 @@ class NeuralNetwork:
                 for _ in range(iterations):  # Iterate over the subset
                     for datum, label in zip(subset_data, subset_labels):
 
+                        pixelArray = np.zeros((28, 28), dtype=int)
+
+                        for key in datum:
+                            x, y = key
+                            pixelArray[x, y] = datum[key]
+
+
+
                         # forward propagation -> input to hidden layer
                         # h_pre = bias_inputlayer_to_hiddenlayer + dot_product of input_layer_weights, input_data
-                        new_wih = w_i_h.T
-                        h_pre = b_i_h + np.dot(subset_data, new_wih)
+
+                        h_pre = b_i_h + np.dot(pixelArray, w_i_h)
                         h = 1 / (1 + np.exp(-h_pre))
                         # subset_data: (500,)
                         # w_i_h: (20, 784)
