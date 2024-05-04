@@ -13,7 +13,6 @@ class NeuralNetwork:
         # output layer: 10 neurons
         warnings.filterwarnings('ignore')
 
-
         w_i_h = np.random.uniform(-0.5, 0.5, (20, p_length))
         w_h_o = np.random.uniform(-0.5, 0.5, (output_length, 20))
 
@@ -60,7 +59,9 @@ class NeuralNetwork:
                 delta_h = w_h_o.T @ delta_o * (h * (1 - h))
                 w_i_h += -learn_rate * delta_h @ pixel_vector.T
                 b_i_h += -learn_rate * delta_h
-        print('DONE')
+            print(nr_correct)
+            #print("Acc: ",round((nr_correct / len(trainingData)) * 100, 2))
+            nr_correct = 0
 
 
 
