@@ -98,7 +98,7 @@ class NeuralNetwork:
             o_num = np.argmax(o)
             if o_num == labels:
                 count_correct+= 1
-        print(count_correct / validationData_len)
+        print(100 * count_correct / validationData_len)
 
         print("Testing...")
         # Test data
@@ -116,7 +116,7 @@ class NeuralNetwork:
             o_num = np.argmax(o)
             if o_num == labels:
                 count_correct += 1
-        print(count_correct / validationData_len)
+        print(100 * count_correct / validationData_len)
 
 
 

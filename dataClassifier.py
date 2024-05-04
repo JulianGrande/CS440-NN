@@ -278,9 +278,10 @@ def runClassifier(args, options):
   if(options.data=="faces"):
     rawTrainingData = samples.loadDataFile("facedata/facedatatrain", numTraining,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
     trainingLabels = samples.loadLabelsFile("facedata/facedatatrainlabels", numTraining)
-    rawValidationData = samples.loadDataFile("facedata/facedatatrain", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
-    validationLabels = samples.loadLabelsFile("facedata/facedatatrainlabels", numTest) #Change this to be 350 instead of same as number of testing labels
-    #validationLabels = samples.loadLabelsFile("facedata/facedatatrainlabels", 350)
+    #rawValidationData = samples.loadDataFile("facedata/facedatavalidation", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
+    rawValidationData = samples.loadDataFile("facedata/facedatavalidation", 301,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
+    #validationLabels = samples.loadLabelsFile("facedata/facedatatrainlabels", numTest) #Change this to be 350 instead of same as number of testing labels
+    validationLabels = samples.loadLabelsFile("facedata/facedatavalidationlabels", 301)
     rawTestData = samples.loadDataFile("facedata/facedatatest", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
     testLabels = samples.loadLabelsFile("facedata/facedatatestlabels", numTest)
     pixel_length = FACE_DATUM_WIDTH * FACE_DATUM_HEIGHT
