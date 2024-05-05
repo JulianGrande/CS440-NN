@@ -36,7 +36,7 @@ class NeuralNetwork:
 
         start_time = int(time.time())
         #time_limit = start_time + 180
-        time_limit = timeL
+        time_limit = start_time + timeL
         errors = []
         while True:
             for percentage in range(10, 101, 10):
